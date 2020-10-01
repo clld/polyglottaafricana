@@ -5,7 +5,7 @@ Install the development environment:
 
 ```sh
 $ pip install virtualenv  # might require sudo/admin privileges
-$ git clone https://github.com/clld/polyglottaafricana.git  # you may also clone a suitable fork
+$ git clone https://github.com/clld/clld.git  # you may also clone a suitable fork
 $ cd polyglottaafricana
 $ python -m virtualenv .venv
 $ source .venv/bin/activate  # Windows: .venv\Scripts\activate.bat
@@ -15,8 +15,8 @@ $ pip install -r requirements.txt  # installs the cloned version with dev-tools 
 Then create a database:
 
 ```sh
-$ su - postgres (or `sudo -i -u postgres` on systems where `su` is not enabled)
-$ createdb polyglottaafricana 
+$ su - postgres
+$ createdb polyglottaafricana
 ```
 
 and initialize it, either
