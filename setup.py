@@ -18,7 +18,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=["clld", "pyclts", "pyglottolog", "clldmpg"],  # >=7.0
+    install_requires=["clld", "pyclts", "pyglottolog", "clldmpg", "cookiecutter"],  # >=7.0
     extras_require={
         "dev": ["flake8", "waitress"],
         "test": [

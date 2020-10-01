@@ -15,7 +15,7 @@ $ pip install -r requirements.txt  # installs the cloned version with dev-tools 
 Then create a database:
 
 ```sh
-$ su - postgres
+$ su - postgres (or `sudo -i -u postgres` on systems where `su` is not enabled)
 $ createdb polyglottaafricana 
 ```
 
