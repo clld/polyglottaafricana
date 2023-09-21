@@ -1,15 +1,12 @@
-import collections
-
 from pyramid.config import Configurator
 
 from clld_glottologfamily_plugin import util
 
-from clld.interfaces import IMapMarker, IValueSet, IValue, IDomainElement
+from clld.interfaces import IMapMarker, IValueSet, IValue, ILinkAttrs
 from clldutils.svg import pie, icon, data_url
 
 # we must make sure custom models are known at database initialization!
 from polyglottaafricana import models
-
 
 
 class LanguageByFamilyMapMarker(util.LanguageByFamilyMapMarker):
@@ -23,6 +20,12 @@ class LanguageByFamilyMapMarker(util.LanguageByFamilyMapMarker):
         return super(LanguageByFamilyMapMarker, self).__call__(ctx, req)
 
 
+def link_attrs(req, obj, **kw):
+    if IValue.providedBy(obj):
+        # we are about to link to a value details page: redirect to valueset page!
+        kw['href'] = req.route_url('valueset', id=obj.valueset.id, **kw.pop('url_kw', {}))
+    return kw
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -32,7 +35,7 @@ def main(global_config, **settings):
 
     config.include('clldmpg')
 
-
+    config.registry.registerUtility(link_attrs, ILinkAttrs)
     config.registry.registerUtility(LanguageByFamilyMapMarker(), IMapMarker)
 
     return config.make_wsgi_app()

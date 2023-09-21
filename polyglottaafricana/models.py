@@ -17,6 +17,7 @@ from clld.db.meta import Base, CustomModelMixin
 from clld.db.models import common
 
 from clld_glottologfamily_plugin.models import HasFamilyMixin
+from clld_ipachart_plugin.models import InventoryMixin
 
 
 #-----------------------------------------------------------------------------
@@ -24,11 +25,13 @@ from clld_glottologfamily_plugin.models import HasFamilyMixin
 #-----------------------------------------------------------------------------
 
 @implementer(interfaces.ILanguage)
-class Variety(CustomModelMixin, common.Language, HasFamilyMixin):
+class Variety(CustomModelMixin, common.Language, HasFamilyMixin, InventoryMixin):
     pk = Column(Integer, ForeignKey('language.pk'), primary_key=True)
     glottocode = Column(Unicode)
-
-
+    reflex_name = Column(Unicode)
+    glottolog_name = Column(Unicode)
+    local_id = Column(Unicode)
+    ord = Column(Integer)
 
 
 @implementer(interfaces.IParameter)
@@ -36,3 +39,8 @@ class Concept(CustomModelMixin, common.Parameter):
     pk = Column(Integer, ForeignKey('parameter.pk'), primary_key=True)
     concepticon_id = Column(Unicode)
 
+
+@implementer(interfaces.IValue)
+class Form(CustomModelMixin, common.Value):
+    pk = Column(Integer, ForeignKey('value.pk'), primary_key=True)
+    segments = Column(Unicode)
