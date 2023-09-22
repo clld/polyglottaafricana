@@ -9,6 +9,11 @@ from clldutils.svg import pie, icon, data_url
 from polyglottaafricana import models
 
 
+_ = lambda s: s
+_('Parameters')
+_('Parameter')
+
+
 class LanguageByFamilyMapMarker(util.LanguageByFamilyMapMarker):
     def __call__(self, ctx, req):
     

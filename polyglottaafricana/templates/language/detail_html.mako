@@ -15,8 +15,22 @@ ${consonants_css}
     </style>
 </%block>
 
-<%def name="sidebar()">\
-${util.language_meta()}
+<%def name="sidebar()">
+<div class="well well-small">
+    <dl class="dl-horizontal">
+        <dt>Glottolog:</dt>
+        <dd>${u.glottolog.link(req, id=ctx.glottocode, label=ctx.glottolog_name)}</dd>
+        <dt>RefLex:</dt>
+        <dd>${ctx.reflex_name}</dd>
+    </dl>
+</div>
+<div class="well well-small">
+    ${request.map.render()}
+    ${h.format_coordinates(ctx)}
+    % if ctx.description:
+    <blockquote>${ctx.description}</blockquote>
+    % endif
+</div>
 </%def>
 
 <h2>${_('Language')} ${ctx.name}</h2>

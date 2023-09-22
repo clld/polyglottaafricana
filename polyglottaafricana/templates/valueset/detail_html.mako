@@ -5,7 +5,7 @@
 
 <h2>
     Words for ${h.link(request, ctx.parameter, label=ctx.parameter.name.split('[')[0])} in
-    ${ctx.language.local_id} ${h.link(request, ctx.language)}</h2>
+    ${ctx.language.id} ${h.link(request, ctx.language)}</h2>
 
 <div class="well">
     <table class="table table-condensed table-nonfluid">

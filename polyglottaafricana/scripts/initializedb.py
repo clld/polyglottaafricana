@@ -46,8 +46,9 @@ def main(args):
         license="http://creativecommons.org/licenses/by/4.0/",
         jsondata={
             'license_icon': 'cc-by.png',
-            'license_name': 'Creative Commons Attribution 4.0 International License'},
-
+            'license_name': 'Creative Commons Attribution 4.0 International License',
+            'concept_list': args.cldf.properties['dc:format'][0],
+        },
     )
 
     for i, name in enumerate(['Guillaume Segerer', 'Robert Forkel', 'Johann-Mattis List']):
@@ -65,18 +66,22 @@ def main(args):
         description=args.cldf.properties.get('dc:bibliographicCitation'),
     )
 
-    for lang in iteritems(args.cldf, 'LanguageTable', 'id', 'glottocode', 'name', 'latitude', 'longitude'):
+    for lang in iteritems(
+            args.cldf,
+            'LanguageTable',
+            'id', 'glottocode', 'name', 'latitude', 'longitude', 'comment'):
         data.add(
             models.Variety,
             lang['id'],
             id=lang['id'],
             name=lang['name'],
+            description=lang['comment'],
             latitude=lang['latitude'],
             longitude=lang['longitude'],
             glottocode=lang['glottocode'],
-            local_id=lang['Local_ID'],
             reflex_name=lang['RefLex_Name'],
             glottolog_name=lang['Glottolog_Name'],
+            ord=lang['Ordinal'],
         )
 
     for rec in bibtex.Database.from_file(args.cldf.bibpath, lowercase=True):
@@ -84,13 +89,16 @@ def main(args):
 
     refs = collections.defaultdict(list)
 
-
     for param in iteritems(args.cldf, 'ParameterTable', 'id', 'concepticonReference', 'name'):
         data.add(
             models.Concept,
             param['id'],
-            id=param['id'],
-            name='{} [{}]'.format(param['name'], param['id']),
+            id=param['Number'],
+            concepticon_id=param['concepticonReference'],
+            description=param['Concepticon_Gloss'],
+            ord=float(param['Number'].translate(
+                ''.maketrans({x: '.{}'.format(i) for i, x in enumerate('abcde')}))),
+            name=param['name'],
         )
 
     scans = {r['id']: r['downloadUrl'].unsplit()
@@ -146,38 +154,3 @@ def prime_cache(args):
     This procedure should be separate from the db initialization, because
     it will have to be run periodically whenever data has been updated.
     """
-    def lid2ord(lid, name):
-        comps = lid.split('-')
-        part = romanint(comps.pop(0).lower())
-        res = [part]
-        if part in {2, 6, 11}:  # 2-a
-            res.append(int(comps.pop(0)))
-            if comps:
-                res.append(ord(comps.pop(0)))
-            else:
-                res.append(999)
-            res.append(999)
-        else:  # A-1-a
-            res.append(ord(comps.pop(0)))
-            if part != 12:
-                res.append(int(comps.pop(0)))
-                if comps:
-                    res.append(ord(comps.pop(0)))
-                else:
-                    res.append(999)
-            else:  # A-a-2a
-                third = comps.pop(0)
-                res.append(ord(third) if third in 'ab' else int(third))
-                if comps:
-                    fourth = comps.pop()
-                    res.append(ord(fourth) if fourth in string.ascii_lowercase else int(fourth[0]))
-                else:
-                    res.append(999)
-
-        assert not comps and len(res) == 4, lid
-        res.append(name)
-        return tuple(res)
-
-    for i, l in enumerate(sorted(
-            DBSession.query(models.Variety), key=lambda l_: lid2ord(l_.local_id, l_.name))):
-        l.ord = i + 1

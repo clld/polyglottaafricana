@@ -7,9 +7,7 @@
 
 <h2>${_('Parameter')} ${ctx.name}</h2>
 
-% if ctx.description:
-<p>${ctx.description}</p>
-% endif
+<p><strong>Concepticon:</strong> ${u.concepticon.link(req, id=ctx.concepticon_id, label=ctx.description)}</p>
 
 <div style="clear: both"/>
 % if map_ or request.map:

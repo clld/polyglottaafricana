@@ -4,6 +4,7 @@ from sqlalchemy import (
     String,
     Unicode,
     Integer,
+    Float,
     Boolean,
     ForeignKey,
     UniqueConstraint,
@@ -30,7 +31,6 @@ class Variety(CustomModelMixin, common.Language, HasFamilyMixin, InventoryMixin)
     glottocode = Column(Unicode)
     reflex_name = Column(Unicode)
     glottolog_name = Column(Unicode)
-    local_id = Column(Unicode)
     ord = Column(Integer)
 
 
@@ -38,6 +38,7 @@ class Variety(CustomModelMixin, common.Language, HasFamilyMixin, InventoryMixin)
 class Concept(CustomModelMixin, common.Parameter):
     pk = Column(Integer, ForeignKey('parameter.pk'), primary_key=True)
     concepticon_id = Column(Unicode)
+    ord = Column(Float)
 
 
 @implementer(interfaces.IValue)
