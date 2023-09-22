@@ -34,6 +34,11 @@ class Words(Values):
     def col_defs(self):
         if self.parameter:
             return [
+                VarietyID(
+                    self,
+                    'No',
+                    model_col=common.Language.id,
+                    get_object=lambda i: i.valueset.language),
                 LinkCol(
                     self,
                     'language',
@@ -44,11 +49,6 @@ class Words(Values):
                     'family',
                     models.Variety,
                     get_object=lambda i: i.valueset.language),
-                #
-                # Add
-                # - language family
-                # - ID order
-                #
                 LinkCol(self, 'name', sTitle='Orthography'),
                 Col(self, 'description', sTitle='IPA'),
                 Col(self, 'segments', model_col=models.Form.segments),
