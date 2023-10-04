@@ -4,7 +4,7 @@
     <div class="well">
         <h3>Cite as</h3>
         <blockquote>
-            Sigismund Koelle. (2023). CLDF dataset derived from Koelle's "Polyglotta Africana" from 1854 (v1.2) [Data set]. Zenodo. <a href="https://doi.org/10.5281/zenodo.8365633">https://doi.org/10.5281/zenodo.8365633</a>
+            Sigismund Koelle. (2023). CLDF dataset derived from Koelle's "Polyglotta Africana" from 1854 (v2.0) [Data set]. Zenodo. <a href="https://doi.org/10.5281/zenodo.8405204">https://doi.org/10.5281/zenodo.8405204</a>
         </blockquote>
     </div>
 </%def>
